@@ -27,6 +27,7 @@ RUN git clone https://github.com/basetenlabs/truss-examples.git
 COPY mon_script.py truss-examples/comfyui-truss/
 COPY app.py truss-examples/comfyui-truss/
 COPY config.yaml truss-examples/comfyui-truss/
+COPY comfy_ui_workflow.json truss-examples/comfyui-truss/data
 
 # Changer le répertoire de travail vers "comfyui-truss"
 WORKDIR /app/truss-examples/comfyui-truss
