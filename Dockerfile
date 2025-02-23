@@ -57,4 +57,4 @@ RUN git clone https://github.com/basetenlabs/truss-examples.git && \
 EXPOSE 5000
 
 # Définir la commande de démarrage
-//CMD ["python", "ComfyUI/main.py", "--listen", "--port", "5000"]
+# CMD ["python", "ComfyUI/main.py", "--listen", "--port", "5000"]
