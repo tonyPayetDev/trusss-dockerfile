@@ -86,13 +86,7 @@
       },
       "class_type": "ControlNetApply"
     },
-    "11": {
-      "inputs": {
-        "image": "{{controlnet_image}}",
-        "choose file to upload": "image"
-      },
-      "class_type": "LoadImage"
-    },
+
     "12": {
       "inputs": {
         "control_net_name": "diffusers_xl_canny_full.safetensors"
