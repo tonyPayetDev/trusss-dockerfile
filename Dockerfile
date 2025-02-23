@@ -21,6 +21,7 @@ RUN pip install --upgrade truss -v
 
 # Exposer le port 5000 pour accéder au serveur
 EXPOSE 5000
-
+RUN git clone https://github.com/basetenlabs/truss-examples.git
+RUN cd comfyui-truss
 # Lancer le serveur Flask
 CMD ["python", "app.py"]
