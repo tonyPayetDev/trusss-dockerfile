@@ -1,132 +1,322 @@
 {
-  "sdxl_controlnet_workflow": {
-    "3": {
-      "inputs": {
-        "seed": 972197629127129,
-        "steps": 40,
-        "cfg": 7,
-        "sampler_name": "euler",
-        "scheduler": "normal",
-        "denoise": 1,
-        "model": [
-          "14",
-          0
-        ],
-        "positive": [
-          "10",
-          0
-        ],
-        "negative": [
-          "7",
-          0
-        ],
-        "latent_image": [
-          "5",
-          0
-        ]
+  "last_node_id": 37,
+  "last_link_id": 116,
+  "nodes": [
+    {
+      "id": 11,
+      "type": "DualCLIPLoader",
+      "pos": [48, 288],
+      "size": { "0": 315, "1": 106 },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [10],
+          "shape": 3,
+          "slot_index": 0,
+          "label": "CLIP"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
       },
-      "class_type": "KSampler"
+      "widgets_values": [
+        "t5xxl_fp16.safetensors",
+        "clip_l.safetensors",
+        "flux"
+      ]
     },
-    "5": {
-      "inputs": {
-        "width": 1024,
-        "height": 1024,
-        "batch_size": 1
+    {
+      "id": 17,
+      "type": "BasicScheduler",
+      "pos": [480, 1008],
+      "size": { "0": 315, "1": 106 },
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 55,
+          "slot_index": 0,
+          "label": "model"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [20],
+          "shape": 3,
+          "label": "SIGMAS"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicScheduler"
       },
-      "class_type": "EmptyLatentImage"
+      "widgets_values": [
+        "simple",
+        20,
+        1
+      ]
     },
-    "6": {
-      "inputs": {
-        "text": "{{positive_prompt}}",
-        "clip": [
-          "14",
-          1
-        ]
+    {
+      "id": 16,
+      "type": "KSamplerSelect",
+      "pos": [480, 912],
+      "size": { "0": 315, "1": 58 },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [19],
+          "shape": 3,
+          "label": "SAMPLER"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
       },
-      "class_type": "CLIPTextEncode"
+      "widgets_values": ["euler"]
     },
-    "7": {
-      "inputs": {
-        "text": "{{negative_prompt}}",
-        "clip": [
-          "14",
-          1
-        ]
+    {
+      "id": 26,
+      "type": "FluxGuidance",
+      "pos": [480, 144],
+      "size": { "0": 317.4000244140625, "1": 58 },
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 41,
+          "label": "conditioning"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [42],
+          "shape": 3,
+          "slot_index": 0,
+          "label": "CONDITIONING"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "FluxGuidance"
       },
-      "class_type": "CLIPTextEncode"
+      "widgets_values": [3.5],
+      "color": "#233",
+      "bgcolor": "#355"
     },
-    "8": {
-      "inputs": {
-        "samples": [
-          "3",
-          0
-        ],
-        "vae": [
-          "14",
-          2
-        ]
-      },
-      "class_type": "VAEDecode"
+    {
+      "id": 22,
+      "type": "BasicGuider",
+      "pos": [576, 48],
+      "size": { "0": 222.3482666015625, "1": 46 },
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 54,
+          "slot_index": 0,
+          "label": "model"
+        },
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 42,
+          "slot_index": 1,
+          "label": "conditioning"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [30],
+          "shape": 3,
+          "slot_index": 0,
+          "label": "GUIDER"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicGuider"
+      }
     },
-    "10": {
-      "inputs": {
-        "strength": 0.6,
-        "conditioning": [
-          "6",
-          0
-        ],
-        "control_net": [
-          "12",
-          0
-        ],
-        "image": [
-          "16",
-          0
-        ]
-      },
-      "class_type": "ControlNetApply"
+    {
+      "id": 13,
+      "type": "SamplerCustomAdvanced",
+      "pos": [864, 192],
+      "size": { "0": 272.3617858886719, "1": 124.53733825683594 },
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 37,
+          "slot_index": 0,
+          "label": "noise"
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 30,
+          "slot_index": 1,
+          "label": "guider"
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 19,
+          "slot_index": 2,
+          "label": "sampler"
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 20,
+          "slot_index": 3,
+          "label": "sigmas"
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 116,
+          "slot_index": 4,
+          "label": "latent_image"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "LATENT",
+          "links": [24],
+          "shape": 3,
+          "slot_index": 0,
+          "label": "output"
+        },
+        {
+          "name": "denoised_output",
+          "type": "LATENT",
+          "links": null,
+          "shape": 3,
+          "label": "denoised_output"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SamplerCustomAdvanced"
+      }
     },
-
-    "12": {
-      "inputs": {
-        "control_net_name": "diffusers_xl_canny_full.safetensors"
+    {
+      "id": 25,
+      "type": "RandomNoise",
+      "pos": [480, 768],
+      "size": { "0": 315, "1": 82 },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [37],
+          "shape": 3,
+          "label": "NOISE"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise"
       },
-      "class_type": "ControlNetLoader"
+      "widgets_values": [
+        219670278747233,
+        "randomize"
+      ],
+      "color": "#2a363b",
+      "bgcolor": "#3f5159"
     },
-    "14": {
-      "inputs": {
-        "ckpt_name": "sd_xl_base_1.0.safetensors"
-      },
-      "class_type": "CheckpointLoaderSimple"
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [866, 367],
+      "size": { "0": 210, "1": 46 },
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 24,
+          "label": "samples"
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 12,
+          "label": "vae"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [9],
+          "slot_index": 0,
+          "label": "IMAGE"
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      }
     },
-    "15": {
-      "inputs": {
-        "images": [
-          "16",
-          0
-        ]
+    {
+      "id": 6,
+      "type": "CLIPTextEncode",
+      "pos": [384, 240],
+      "size": { "0": 422.84503173828125, "1": 164.31304931640625 },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 10,
+          "label": "clip"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [41],
+          "slot_index": 0,
+          "label": "CONDITIONING"
+        }
+      ],
+      "title": "CLIP Text Encode (Positive Prompt)",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
       },
-      "class_type": "PreviewImage"
-    },
-    "16": {
-      "inputs": {
-        "low_threshold": 0.2,
-        "high_threshold": 0.6,
-        "image": [
-          "11",
-          0
-        ]
-      },
-      "class_type": "Canny"
-    },
-    "18": {
-      "inputs": {
-        "images": [
-          "8",
-          0
-        ]
-      },
-      "class_type": "PreviewImage"
+      "widgets_values": [
+        "cute anime girl with massive fluffy fennec ears and a big fluffy tail blonde messy long hair blue eyes wearing a maid outfit with a long black gold leaf pattern dress and a big fluffy tail with lots of fluffy cute fur"
+      ]
     }
-  }
+  ]
 }
