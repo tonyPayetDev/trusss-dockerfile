@@ -10,6 +10,9 @@ RUN apt-get update && apt-get install -y \
 # Définir le répertoire de travail
 WORKDIR /app
 
+# Installer Truss
+RUN pip install truss
+
 # Cloner le dépôt ComfyUI et installer les dépendances
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
     cd ComfyUI && \
@@ -40,8 +43,14 @@ RUN cd ComfyUI/custom_nodes && \
 RUN cd ComfyUI/models/controlnet && \
     wget -O control-lora-canny-rank256.safetensors [URL_DU_MODELE]
 
-# Copier le workflow ComfyUI dans le conteneur
-COPY data/comfy_ui_workflow.json /app/data/comfy_ui_workflow.json
+# Télécharger comfy_ui_workflow.json depuis GitHub
+# RUN mkdir -p /app/data && \
+#     wget -O /app/data/comfy_ui_workflow.json https://raw.githubusercontent.com/[UTILISATEUR]/[REPO]/main/data/comfy_ui_workflow.json
+
+# Cloner et exécuter Truss pour comfyui-truss
+RUN git clone https://github.com/basetenlabs/truss-examples.git && \
+    cd truss-examples/comfyui-truss && \
+    truss push
 
 # Exposer le port utilisé par l'application
 EXPOSE 5000
