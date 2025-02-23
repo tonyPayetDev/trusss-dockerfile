@@ -1,4 +1,4 @@
-sdxl_controlnet_workflow = {
+{
   "3": {
     "inputs": {
       "seed": 972197629127129,
