@@ -30,4 +30,6 @@ COPY mon_script.py truss-examples/comfyui-truss/
 WORKDIR /app/truss-examples/comfyui-truss
 
 # Lancer le serveur Flask
-CMD ["python", "app.py"]
+# CMD ["python", "app.py"]
+CMD [ "bash" ]
+
