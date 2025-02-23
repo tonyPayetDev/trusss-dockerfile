@@ -1,10 +1,12 @@
 FROM python:3.8-slim
 
 # Installer les dépendances système nécessaires et nettoyer les caches pour réduire la taille de l'image
+# Installer les dépendances système nécessaires, bash et nettoyer les caches pour réduire la taille de l'image
 RUN apt-get update && apt-get install -y \
     git \
     wget \
     python3-pip \
+    bash \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
