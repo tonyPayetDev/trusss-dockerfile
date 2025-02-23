@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Installer Truss
-RUN pip install truss
+RUN pip install --upgrade truss
 
 # Cloner le dépôt ComfyUI et installer les dépendances
 # RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
@@ -53,8 +53,6 @@ ENV API_KEY="NrXqhEpQ.LQx9rNYXMYWlKLk2HrDYY4b8mqi9Ebl1"
 RUN git clone https://github.com/basetenlabs/truss-examples.git && \
     cd truss-examples/comfyui-truss && \
 
-# Exposer le port utilisé par l'application
-EXPOSE 5000
 
 # Définir la commande de démarrage
 # CMD ["python", "ComfyUI/main.py", "--listen", "--port", "5000"]
