@@ -26,6 +26,7 @@ EXPOSE 5000
 RUN git clone https://github.com/basetenlabs/truss-examples.git
 COPY mon_script.py truss-examples/comfyui-truss/
 COPY app.py truss-examples/comfyui-truss/
+COPY config.yaml truss-examples/comfyui-truss/
 
 # Changer le répertoire de travail vers "comfyui-truss"
 WORKDIR /app/truss-examples/comfyui-truss
