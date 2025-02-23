@@ -1,8 +1,8 @@
-import os
+import os 
 import random
 import base64
 import requests
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -12,12 +12,17 @@ baseten_api_key = "AUmtSj8s.PbeDv3kJQtZ1XuejV0HrFv4lmS3F8vrp"
 
 @app.route('/generate-image', methods=['GET'])
 def generate_image():
-    # Set prompts and controlnet image
+    # Récupérer les paramètres depuis l'URL
+    positive_prompt = request.args.get('positive_prompt', "A top down view of a river through the woods")
+    negative_prompt = request.args.get('negative_prompt', "blurry, text, low quality")
+    controlnet_image = request.args.get('controlnet_image', "https://storage.googleapis.com/logos-bucket-01/baseten_logo.png")
+    seed = random.randint(1, 1000000)
+
     values = {
-        "positive_prompt": "A top down view of a river through the woods",
-        "negative_prompt": "blurry, text, low quality",
-        "controlnet_image": "https://storage.googleapis.com/logos-bucket-01/baseten_logo.png",
-        "seed": random.randint(1, 1000000)
+        "positive_prompt": positive_prompt,
+        "negative_prompt": negative_prompt,
+        "controlnet_image": controlnet_image,
+        "seed": seed
     }
 
     try:
@@ -31,11 +36,10 @@ def generate_image():
         # Process the response
         res = res.json()
         if "result" in res and len(res["result"]) > 0:
-            # Extraire l'image en base64 (au bon endroit)
+            # Extraire l'image en base64
             preamble = "data:image/png;base64,"
             image_data = res["result"][0].get("data", "")
 
-            # Vérifier si l'image est présente
             if image_data:
                 # Si l'image commence par un préambule, on le supprime et on décode
                 if image_data.startswith(preamble):
@@ -48,10 +52,11 @@ def generate_image():
                 with open("comfyui.png", 'wb') as img_file:
                     img_file.write(output)
 
-                # Ouvrir l'image (sur Windows)
-                os.system("start comfyui.png")
-
-                return jsonify({"message": "Image generated successfully!"}), 200
+                # Retourner l'URL de l'image générée avec votre URL externe
+                return jsonify({
+                    "message": "Image generated successfully!",
+                    "image_url": "http://wo4wo8owgckwkokcgcsko04s.45.90.121.197.sslip.io/comfyui.png"
+                }), 200
             else:
                 return jsonify({"error": "No image found in the response."}), 400
         else:
@@ -59,6 +64,13 @@ def generate_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/comfyui.png', methods=['GET'])
+def get_image():
+    try:
+        with open("comfyui.png", "rb") as img_file:
+            return img_file.read(), 200, {'Content-Type': 'image/png'}
+    except FileNotFoundError:
+        return jsonify({"error": "Image not found."}), 404
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
