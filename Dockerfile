@@ -52,7 +52,6 @@ ENV API_KEY="NrXqhEpQ.LQx9rNYXMYWlKLk2HrDYY4b8mqi9Ebl1"
 # Cloner et exécuter Truss pour comfyui-truss
 RUN git clone https://github.com/basetenlabs/truss-examples.git && \
     cd truss-examples/comfyui-truss && \
-    truss push
 
 # Exposer le port utilisé par l'application
 EXPOSE 5000
