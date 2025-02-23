@@ -16,6 +16,8 @@ COPY app.py .
 
 # Installer Flask
 RUN pip install Flask
+RUN pip install --upgrade truss -v
+
 
 # Exposer le port 5000 pour accéder au serveur
 EXPOSE 5000
