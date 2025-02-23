@@ -25,11 +25,12 @@ RUN pip install --upgrade truss -v
 EXPOSE 5000
 RUN git clone https://github.com/basetenlabs/truss-examples.git
 COPY mon_script.py truss-examples/comfyui-truss/
+COPY app.py truss-examples/comfyui-truss/
 
 # Changer le répertoire de travail vers "comfyui-truss"
 WORKDIR /app/truss-examples/comfyui-truss
 
 # Lancer le serveur Flask
-CMD ["python", "mon_script.py"]
+CMD ["python", "app.py"]
 #CMD [ "bash" ]
 
