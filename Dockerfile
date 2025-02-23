@@ -46,6 +46,7 @@ RUN pip install truss
 # Télécharger comfy_ui_workflow.json depuis GitHub
 # RUN mkdir -p /app/data && \
 #     wget -O /app/data/comfy_ui_workflow.json https://raw.githubusercontent.com/[UTILISATEUR]/[REPO]/main/data/comfy_ui_workflow.json
+COPY .env /app/.env
 
 # Cloner et exécuter Truss pour comfyui-truss
 RUN git clone https://github.com/basetenlabs/truss-examples.git && \
