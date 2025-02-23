@@ -1,7 +1,7 @@
-{
+sdxl_controlnet_workflow = {
   "3": {
     "inputs": {
-      "seed": "{{seed}}",
+      "seed": 972197629127129,
       "steps": 40,
       "cfg": 7,
       "sampler_name": "euler",
