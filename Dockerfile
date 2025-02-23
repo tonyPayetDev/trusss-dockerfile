@@ -11,13 +11,14 @@ RUN apt-get update && apt-get install -y \
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Installer truss avec les détails du processus
-RUN pip install --upgrade truss -v
+# Copier le fichier de l'application (assure-toi que `app.py` est dans le même dossier que ton Dockerfile)
+COPY app.py .
 
-# Si tu as d'autres dépendances à installer via un fichier requirements.txt, tu peux ajouter ces lignes :
-# COPY requirements.txt .
-# RUN pip install -r requirements.txt
+# Installer Flask
+RUN pip install Flask
 
-# Démarrer le terminal bash
-CMD [ "bash" ]
-CMD ["python", "mon_script.py"]
+# Exposer le port 5000 pour accéder au serveur
+EXPOSE 5000
+
+# Lancer le serveur Flask
+CMD ["python", "app.py"]
