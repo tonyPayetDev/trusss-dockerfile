@@ -14,34 +14,34 @@ WORKDIR /app
 RUN pip install truss
 
 # Cloner le dépôt ComfyUI et installer les dépendances
-RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
-    cd ComfyUI && \
-    git checkout b1fd26fe9e55163f780bf9e5f56bf9bf5f035c93 && \
-    pip install -r requirements.txt
+# RUN git clone https://github.com/comfyanonymous/ComfyUI.git && \
+#     cd ComfyUI && \
+#     git checkout b1fd26fe9e55163f780bf9e5f56bf9bf5f035c93 && \
+#     pip install -r requirements.txt
 
-# Installer les nœuds personnalisés
-RUN cd ComfyUI/custom_nodes && \
-    git clone https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes --recursive && \
-    cd ComfyUI-Inference-Core-Nodes && \
-    pip install -e .[cuda12] && \
-    cd .. && \
-    git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini --recursive && \
-    cd ComfyUI-Gemini && \
-    pip install -r requirements.txt && \
-    cd .. && \
-    git clone https://github.com/kijai/ComfyUI-Marigold --recursive && \
-    cd ComfyUI-Marigold && \
-    pip install -r requirements.txt && \
-    cd .. && \
-    git clone https://github.com/omar92/ComfyUI-QualityOfLifeSuit_Omar92 --recursive && \
-    cd .. && \
-    git clone https://github.com/Fannovel16/comfyui_controlnet_aux --recursive && \
-    cd comfyui_controlnet_aux && \
-    pip install -r requirements.txt
+# # Installer les nœuds personnalisés
+# RUN cd ComfyUI/custom_nodes && \
+#     git clone https://github.com/LykosAI/ComfyUI-Inference-Core-Nodes --recursive && \
+#     cd ComfyUI-Inference-Core-Nodes && \
+#     pip install -e .[cuda12] && \
+#     cd .. && \
+#     git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini --recursive && \
+#     cd ComfyUI-Gemini && \
+#     pip install -r requirements.txt && \
+#     cd .. && \
+#     git clone https://github.com/kijai/ComfyUI-Marigold --recursive && \
+#     cd ComfyUI-Marigold && \
+#     pip install -r requirements.txt && \
+#     cd .. && \
+#     git clone https://github.com/omar92/ComfyUI-QualityOfLifeSuit_Omar92 --recursive && \
+#     cd .. && \
+#     git clone https://github.com/Fannovel16/comfyui_controlnet_aux --recursive && \
+#     cd comfyui_controlnet_aux && \
+#     pip install -r requirements.txt
 
-# Télécharger les modèles nécessaires
-RUN cd ComfyUI/models/controlnet && \
-    wget -O control-lora-canny-rank256.safetensors [URL_DU_MODELE]
+# # Télécharger les modèles nécessaires
+# RUN cd ComfyUI/models/controlnet && \
+#     wget -O control-lora-canny-rank256.safetensors [URL_DU_MODELE]
 
 # Télécharger comfy_ui_workflow.json depuis GitHub
 # RUN mkdir -p /app/data && \
