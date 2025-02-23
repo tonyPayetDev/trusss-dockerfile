@@ -20,3 +20,4 @@ RUN pip install --upgrade truss -v
 
 # Démarrer le terminal bash
 CMD [ "bash" ]
+CMD ["python", "mon_script.py"]
