@@ -22,5 +22,5 @@ res = requests.post(
 )
 # Get output image
 res = res.json()
-print(resp.json())
+print(res)
 
