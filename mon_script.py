@@ -5,7 +5,7 @@ import base64
 import requests
 
 # Set essential values
-model_id = "2qjggr2q"
+model_id = "4w7v4jdw"
 baseten_api_key = "AUmtSj8s.PbeDv3kJQtZ1XuejV0HrFv4lmS3F8vrp"
 # Set prompts and controlnet image
 values = {
