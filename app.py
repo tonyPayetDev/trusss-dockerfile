@@ -35,6 +35,9 @@ def generate_image():
 
         # Process the response
         res = res.json()
+        print("Request values:", values)  # Affiche les valeurs envoyées
+        print("API response:", res)  # Affiche la réponse de l'API
+
         if "result" in res and len(res["result"]) > 0:
             # Extraire l'image en base64
             preamble = "data:image/png;base64,"
