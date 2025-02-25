@@ -21,7 +21,7 @@ def generate_image():
     values = {
         "positive_prompt": positive_prompt,
         "negative_prompt": negative_prompt,
-       # // "controlnet_image": controlnet_image,
+        "controlnet_image": controlnet_image,
         "seed": seed
     }
 
