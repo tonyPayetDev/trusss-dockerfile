@@ -16,7 +16,7 @@ def generate_image():
     positive_prompt = request.args.get('positive_prompt', "A top down view of a river through the woods")
     negative_prompt = request.args.get('negative_prompt', "blurry, text, low quality")
     controlnet_image = request.args.get('controlnet_image', "https://storage.googleapis.com/logos-bucket-01/baseten_logo.png")
-    seed = random.randint(1, 1000000)
+    seed = random.randint(1, 10)
 
     values = {
         "positive_prompt": positive_prompt,
