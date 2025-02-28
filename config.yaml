@@ -13,17 +13,17 @@ build_commands:
 environment_variables: {}
 external_package_dirs: []
 model_metadata: {}
-model_name: comfy build commands
+model_name: ComfyUI Anime Pet Style Transfer
 python_version: py310
 requirements:
-  - websocket-client==1.6.4
-  - accelerate==0.23.0
-  - opencv-python
+ - websocket-client==1.6.4
+ - accelerate==0.23.0
+ - opencv-python
 resources:
-  accelerator: A100
-  use_gpu: true
+ accelerator: A100
+ use_gpu: true
 secrets: {}
 system_packages:
-  - wget
-  - ffmpeg
-  - libgl1-mesa-glx
+ - wget
+ - ffmpeg
+ - libgl1-mesa-glx
