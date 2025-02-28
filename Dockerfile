@@ -29,6 +29,7 @@ COPY mon_script.py truss-examples/comfyui-truss/
 COPY app.py truss-examples/comfyui-truss/
 COPY config.yaml truss-examples/comfyui-truss/
 COPY comfy_ui_workflow.json truss-examples/comfyui-truss/data
+RUN mkdir -p /app/truss-examples/comfyui-truss/models/controlnet
 
 # Changer le répertoire de travail vers "comfyui-truss"
 WORKDIR /app/truss-examples/comfyui-truss
