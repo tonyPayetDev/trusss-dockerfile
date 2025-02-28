@@ -1,78 +1,79 @@
-import os
+import os 
 import random
 import base64
 import requests
-from flask import Flask, jsonify, request, send_file
-from PIL import Image
-from io import BytesIO
-import uuid
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# Charger les variables d'environnement
-MODEL_ID = os.getenv("MODEL_ID", "4w7v4jdw")
-BASETEN_API_KEY = os.getenv("BASETEN_API_KEY", "AUmtSj8s.PbeDv3kJQtZ1XuejV0HrFv4lmS3F8vrp")
+# Set essential values
+model_id = "4w7v4jdw"
+baseten_api_key = "AUmtSj8s.PbeDv3kJQtZ1XuejV0HrFv4lmS3F8vrp"
 
-# Dossier pour stocker les images générées
-OUTPUT_DIR = "generated_images"
-IMAGE_PATH = "comfyui.png"
-
+@app.route('/generate-image', methods=['GET'])
 def generate_image():
-    """Appelle l'API Baseten et enregistre l'image générée avec des logs détaillés."""
+    # Récupérer les paramètres depuis l'URL
+    positive_prompt = request.args.get('positive_prompt', "A top down view of a river through the woods")
+    negative_prompt = request.args.get('negative_prompt', "blurry, text, low quality")
+    controlnet_image = request.args.get('controlnet_image', "https://storage.googleapis.com/logos-bucket-01/baseten_logo.png")
+    seed = random.randint(1, 10)
+
     values = {
-        "positive_prompt": "A beautiful sunset over the ocean",
-        "negative_prompt": "blurry, dark, low quality",
-        "controlnet_image": "https://storage.googleapis.com/logos-bucket-01/baseten_logo.png",
-        "seed": random.randint(1, 1000000)
+        "positive_prompt": positive_prompt,
+        "negative_prompt": negative_prompt,
+        "controlnet_image": controlnet_image,
+        "seed": seed
     }
 
-    print("🚀 Envoi de la requête à l'API Baseten...")
-    print(f"🔹 Données envoyées : {values}")
-
     try:
+        # Call model endpoint
         res = requests.post(
-            f"https://model-{MODEL_ID}.api.baseten.co/development/predict",
-            headers={"Authorization": f"Api-Key {BASETEN_API_KEY}"},
+            f"https://model-{model_id}.api.baseten.co/development/predict",
+            headers={"Authorization": f"Api-Key {baseten_api_key}"},
             json={"workflow_values": values}
         )
 
-        print(f"📡 Réponse reçue - Code HTTP : {res.status_code}")
+        # Process the response
+        res = res.json()
+        print("Request values:", values)  # Affiche les valeurs envoyées
+        print("API response:", res)  # Affiche la réponse de l'API
 
-        if res.status_code == 200:
-            res_json = res.json()
-            print(f"✅ Réponse JSON : {res_json}")
+        if "result" in res and len(res["result"]) > 0:
+            # Extraire l'image en base64
+            preamble = "data:image/png;base64,"
+            image_data = res["result"][0].get("data", "")
 
-            if "result" in res_json and len(res_json["result"]) > 1 and "image" in res_json["result"][1]:
-                preamble = "data:image/png;base64,"
-                image_data = res_json["result"][1]["image"]
+            if image_data:
+                # Si l'image commence par un préambule, on le supprime et on décode
+                if image_data.startswith(preamble):
+                    image_data = image_data.replace(preamble, "")
+                
+                # Décoder l'image en base64
+                output = base64.b64decode(image_data)
 
-                print(f"🖼️ Extraction de l'image base64 (taille : {len(image_data)} caractères)...")
-
-                output = base64.b64decode(image_data.replace(preamble, ""))
-
-                with open(IMAGE_PATH, "wb") as img_file:
+                # Sauvegarder l'image dans un fichier
+                with open("comfyui.png", 'wb') as img_file:
                     img_file.write(output)
 
-                print(f"✅ Image enregistrée : {IMAGE_PATH}")
+                # Retourner l'URL de l'image générée avec votre URL externe
+                return jsonify({
+                    "message": "Image generated successfully!",
+                    "image_url": "http://wo4wo8owgckwkokcgcsko04s.45.90.121.197.sslip.io/comfyui.png"
+                }), 200
             else:
-                print("⚠️ Format de réponse inattendu :", res_json)
-
+                return jsonify({"error": "No image found in the response."}), 400
         else:
-            print(f"❌ Erreur API - Statut {res.status_code} : {res.text}")
-
+            return jsonify({"error": "API response doesn't contain a valid 'result'."}), 400
     except Exception as e:
-        print(f"❌ Exception lors de la requête : {e}")
+        return jsonify({"error": str(e)}), 500
 
-@app.route("/get-image", methods=["GET"])
+@app.route('/comfyui.png', methods=['GET'])
 def get_image():
-    """Endpoint API pour récupérer l'image enregistrée."""
-    print("📡 Requête reçue : /get-image")
-    
-    if os.path.exists(IMAGE_PATH):
-        print(f"✅ Envoi de l'image {IMAGE_PATH}...")
-        return send_file(IMAGE_PATH, mimetype="image/png")
-    else:
-        print("❌ Erreur : Image non trouvée")
-        return {"error": "Image non trouvée"}, 404
+    try:
+        with open("comfyui.png", "rb") as img_file:
+            return img_file.read(), 200, {'Content-Type': 'image/png'}
+    except FileNotFoundError:
+        return jsonify({"error": "Image not found."}), 404
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000)
