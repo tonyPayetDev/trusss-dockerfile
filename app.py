@@ -11,6 +11,9 @@ app = Flask(__name__)
 # Set essential values
 model_id = "v316pljq"
 baseten_api_key = "AUmtSj8s.PbeDv3kJQtZ1XuejV0HrFv4lmS3F8vrp"
+def encode_image_to_base64(image_url):
+    response = requests.get(image_url)
+    return base64.b64encode(response.content).decode("utf-8")
 
 @app.route('/generate-image', methods=['GET'])
 def generate_image():
@@ -23,7 +26,7 @@ def generate_image():
     values = {
         "positive_prompt": positive_prompt,
         "negative_prompt": negative_prompt,
-        "controlnet_image": controlnet_image,
+        "controlnet_image": encode_image_to_base64(controlnet_image),
         "seed": seed
     }
 
