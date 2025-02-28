@@ -58,10 +58,10 @@ def generate_image():
             headers={"Authorization": f"Api-Key {BASETEN_API_KEY}"},
             json={"workflow_values": values}
         )
-            print(f"🔹 Statut de la réponse : {response.status_code}")
-            print(f"🔹 Contenu brut : {response.text}")
-            response_json = response.json()
-            print(f"🔹 Réponse de l'API : {response_json}")
+        print(f"🔹 Statut de la réponse : {response.status_code}")
+        print(f"🔹 Contenu brut : {response.text}")
+        response_json = response.json()
+        print(f"🔹 Réponse de l'API : {response_json}")
 
 
         # Vérifier si l'API retourne une image en base64
