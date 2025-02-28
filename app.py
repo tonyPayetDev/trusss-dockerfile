@@ -30,7 +30,7 @@ def generate_image():
     try:
         # Call model endpoint
         res = requests.post(
-            f"https://model-{model_id}.api.baseten.co/development/predict",
+            f"https://model-{model_id}.api.baseten.co/environments/production/predict",
             headers={"Authorization": f"Api-Key {baseten_api_key}"},
             json={"workflow_values": values}
         )
