@@ -1,7 +1,6 @@
 FROM python:3.8-slim
 
-# Installer les dépendances système nécessaires et nettoyer les caches pour réduire la taille de l'image
-# Installer les dépendances système nécessaires, bash et nettoyer les caches pour réduire la taille de l'image
+# Installer les dépendances système
 RUN apt-get update && apt-get install -y \
     git \
     wget \
@@ -13,28 +12,25 @@ RUN apt-get update && apt-get install -y \
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier le fichier de l'application (assure-toi que `app.py` est dans le même dossier que ton Dockerfile)
-COPY app.py .
-
-# Installer Flask
-RUN pip install Flask
-RUN pip install --upgrade truss -v
-RUN pip install pillow
-
-
-# Exposer le port 5000 pour accéder au serveur
-EXPOSE 5000
+# Cloner le repo Baseten si nécessaire
 RUN git clone https://github.com/basetenlabs/truss-examples.git
-COPY mon_script.py truss-examples/comfyui-truss/
-COPY app.py truss-examples/comfyui-truss/
-COPY config.yaml truss-examples/comfyui-truss/
-COPY comfy_ui_workflow.json truss-examples/comfyui-truss/data
-RUN mkdir -p /app/truss-examples/comfyui-truss/models/controlnet
 
-# Changer le répertoire de travail vers "comfyui-truss"
-WORKDIR /app/truss-examples/comfyui-truss
+# Copier les fichiers dans /app
+COPY app.py mon_script.py config.yaml /app/
+
+# Créer le dossier "data" et y copier le fichier comfy_ui_workflow.json
+RUN mkdir -p /app/data
+COPY data/comfy_ui_workflow.json /app/data/
+
+# Créer le dossier models/controlnet
+RUN mkdir -p /app/models/controlnet
+
+# Installer les dépendances Python
+RUN pip install Flask pillow --no-cache-dir
+RUN pip install --upgrade truss -v --no-cache-dir
+
+# Exposer le port 5000
+EXPOSE 5000
 
 # Lancer le serveur Flask
-CMD ["python", "app.py", "--debug"]
-#CMD [ "bash" ]
-
+CMD ["python", "app.py"]
