@@ -51,9 +51,9 @@ def generate_image():
                     image_data = image_data.replace(preamble, "")
 
                 img_bytes = base64.b64decode(image_data)
+                img = Image.open(BytesIO(img_bytes)).convert("RGB")
 
-                # Charger l’image en couleur (sans conversion noir et blanc)
-                img = Image.open(BytesIO(img_bytes))
+    
 
                 # Sauvegarder l'image
                 img.save("comfyui.png")
