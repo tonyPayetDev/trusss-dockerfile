@@ -23,25 +23,25 @@ def pil_to_b64(pil_img):
     pil_img.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
-@app.route('/generate-image', methods=['POST'])
+@app.route('/generate-image', methods=['GET'])
 def generate_image():
-    """Génère une image en appelant l'API Baseten et renvoie une URL accessible."""
+    """Génère une image via un GET et retourne une URL accessible."""
     try:
-        data = request.json
-
-        positive_prompt = data.get("positive_prompt", "A top down view of a river through the woods")
-        negative_prompt = data.get("negative_prompt", "blurry, text, low quality")
-        controlnet_image = data.get("controlnet_image")
+        # Récupérer les paramètres de la requête
+        positive_prompt = request.args.get("positive_prompt", "A top down view of a river through the woods")
+        negative_prompt = request.args.get("negative_prompt", "blurry, text, low quality")
+        controlnet_image = request.args.get("controlnet_image")
         seed = random.randint(1, 1000000)  # Génère un seed aléatoire
 
-        # Vérifier si une image locale est fournie
-        if controlnet_image and os.path.exists(controlnet_image):
-            with Image.open(controlnet_image) as img:
-                controlnet_image = {"type": "image", "data": pil_to_b64(img)}
-        elif isinstance(controlnet_image, str) and controlnet_image.startswith("http"):
+        # Vérifier si une image est fournie
+        if not controlnet_image:
+            return jsonify({"error": "Aucune image fournie."}), 400
+
+        # Vérifier si c'est une URL valide
+        if controlnet_image.startswith("http"):
             controlnet_image = {"type": "url", "data": controlnet_image}
         else:
-            return jsonify({"error": "Image locale non trouvée ou URL invalide."}), 400
+            return jsonify({"error": "URL invalide pour l'image."}), 400
 
         values = {
             "positive_prompt": positive_prompt,
