@@ -1,8 +1,10 @@
-import os 
+import os
 import random
 import base64
 import requests
 from flask import Flask, jsonify, request
+from PIL import Image
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -44,18 +46,19 @@ def generate_image():
             image_data = res["result"][0].get("data", "")
 
             if image_data:
-                # Si l'image commence par un préambule, on le supprime et on décode
+                # Décoder l'image
                 if image_data.startswith(preamble):
                     image_data = image_data.replace(preamble, "")
-                
-                # Décoder l'image en base64
-                output = base64.b64decode(image_data)
 
-                # Sauvegarder l'image dans un fichier
-                with open("comfyui.png", 'wb') as img_file:
-                    img_file.write(output)
+                img_bytes = base64.b64decode(image_data)
 
-                # Retourner l'URL de l'image générée avec votre URL externe
+                # Charger l’image en couleur (sans conversion noir et blanc)
+                img = Image.open(BytesIO(img_bytes))
+
+                # Sauvegarder l'image
+                img.save("comfyui.png")
+
+                # Retourner l'URL de l'image
                 return jsonify({
                     "message": "Image generated successfully!",
                     "image_url": "http://wo4wo8owgckwkokcgcsko04s.45.90.121.197.sslip.io/comfyui.png"
