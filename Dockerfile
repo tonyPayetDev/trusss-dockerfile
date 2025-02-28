@@ -35,6 +35,6 @@ RUN mkdir -p /app/truss-examples/comfyui-truss/models/controlnet
 WORKDIR /app/truss-examples/comfyui-truss
 
 # Lancer le serveur Flask
-CMD ["python", "app.py --debug"] 
+CMD ["python", "app.py", "--debug"]
 #CMD [ "bash" ]
 
