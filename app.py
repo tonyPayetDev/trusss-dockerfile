@@ -51,7 +51,7 @@ def generate_image():
             img_bytes = base64.b64decode(image_data)
 
             # Sauvegarder l'image dans /mnt/data/
-            image_path = "/mnt/data/comfyui.png"
+            image_path = "/app/comfyui.png"
             with open(image_path, 'wb') as img_file:
                 img_file.write(img_bytes)
 
@@ -70,7 +70,7 @@ def generate_image():
 # Route pour récupérer l'image
 @app.route('/get-image', methods=['GET'])
 def get_image():
-    image_path = "/mnt/data/comfyui.png"
+    image_path = "/app/comfyui.png"
     if os.path.exists(image_path):
         return send_file(image_path, mimetype='image/png')
     else:
