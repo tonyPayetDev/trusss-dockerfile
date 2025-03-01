@@ -20,7 +20,7 @@ COPY app.py mon_script.py config.yaml /app/
 
 # Créer le dossier "data" et y copier le fichier comfy_ui_workflow.json
 RUN mkdir -p /app/data
-COPY data/comfy_ui_workflow.json /app/data/
+COPY comfy_ui_workflow.json /app/data/
 
 # Créer le dossier models/controlnet
 RUN mkdir -p /app/models/controlnet
