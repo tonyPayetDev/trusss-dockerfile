@@ -26,7 +26,7 @@ def generate_image():
     values = {
         "positive_prompt": positive_prompt,
         "negative_prompt": negative_prompt,
-        "controlnet_image": encode_image_to_base64(controlnet_image),
+        "controlnet_image": "https://storage.googleapis.com/logos-bucket-01/baseten_logo.png",
         "seed": seed
     }
 
