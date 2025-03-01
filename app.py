@@ -56,10 +56,8 @@ def generate_image():
                 img_bytes = base64.b64decode(image_data)
                 img = Image.open(BytesIO(img_bytes)).convert("RGB")
 
-    
+                img.save("/mnt/data/comfyui.png")
 
-                # Sauvegarder l'image
-                img.save("comfyui.png")
 
                 # Retourner l'URL de l'image
                 return jsonify({
