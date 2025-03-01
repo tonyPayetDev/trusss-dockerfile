@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # Set essential values
 model_id = "v316pljq"
-baseten_api_key = "AUmtSj8s.PbeDv3kJQtZ1XuejV0HrFv4lmS3F8vrp"
+baseten_api_key = "1VlO7CAN.VepxLs43kkaBjAvOzfdACHLsFaR6QzQP"
 def encode_image_to_base64(image_url):
     response = requests.get(image_url)
     return base64.b64encode(response.content).decode("utf-8")
