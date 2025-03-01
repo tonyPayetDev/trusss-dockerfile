@@ -76,10 +76,11 @@ def generate_image():
 @app.route('/comfyui.png', methods=['GET'])
 def get_image():
     try:
-        with open("comfyui.png", "rb") as img_file:
+        with open("/mnt/data/comfyui.png", "rb") as img_file:
             return img_file.read(), 200, {'Content-Type': 'image/png'}
     except FileNotFoundError:
         return jsonify({"error": "Image not found."}), 404
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
